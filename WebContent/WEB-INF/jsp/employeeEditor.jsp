@@ -11,7 +11,7 @@
 <title>社員編集画面</title>
 </head>
 <body>
-	<h1>データ編集</h1>
+	<h1>データ編集</h1>aaaa
 	<form action="/CodeCampFinal/MainServlet" method="post"
 		enctype="multipart/form-data">
 		社員ID:<input type="text" name="empID" value="${employee.empID }" placeholder="EMP001"><br />
