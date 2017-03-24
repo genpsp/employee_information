@@ -18,25 +18,30 @@
 			<tr>
 				<td>${department.id }</td>
 				<td>${department.department }</td>
-				<td><form action="/CodeCampFinal/DepartmentServlet"
-						method="get">
-						<input type="hidden" name="departID" value="${department.id }">
-						<input type="hidden" name="department" value="${department }">
-						<input type="submit" name="requestType" value="編集">
-					</form></td>
-				<td><form action="/CodeCampFinal/DepartmentServlet"
-						method="get">
-						<input type="hidden" name="departID" value="${department.id }">
-						<input type="hidden" name="department" value="${department }">
-						<input type="submit" name="requestType" value="削除">
-					</form></td>
+				<c:if test="${authority.authority == \"admin\" }">
+					<td><form action="/CodeCampFinal/DepartmentServlet"
+							method="get">
+							<input type="hidden" name="departID" value="${department.id }">
+							<input type="hidden" name="department" value="${department }">
+							<input type="submit" name="requestType" value="編集">
+						</form></td>
+					<td><form action="/CodeCampFinal/DepartmentServlet"
+							method="get">
+							<input type="hidden" name="departID" value="${department.id }">
+							<input type="hidden" name="department" value="${department }">
+							<input type="submit" name="requestType" value="削除">
+						</form></td>
+				</c:if>
 			</tr>
 		</c:forEach>
 	</table>
 	<form action="/CodeCampFinal/DepartmentServlet" method="get">
 		${errorMsg }
-		<input type="submit" name="requestType" value="新規追加"><br /> <input
-			type="submit" name="requestType" value="TOPへ">
+		<c:if test="${authority.authority == \"admin\" }">
+		<input type="submit" name="requestType" value="新規追加">
+			<br />
+		</c:if>
+		<input type="submit" name="requestType" value="TOPへ">
 	</form>
 </body>
 </html>

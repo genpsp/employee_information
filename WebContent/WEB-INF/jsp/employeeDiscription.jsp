@@ -31,7 +31,7 @@
 		<br /> 住所:${employee.address }
 	</c:if>
 	<br /> 所属:${employee.department.department }
-	<br /> 役職:${employee.position.positon }
+	<br /> 役職:${employee.position.position }
 	<br /> 入社日:${employee.enterDate }
 	<br /> 退社日:${employee.retireDate }
 	<br />

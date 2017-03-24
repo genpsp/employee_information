@@ -28,7 +28,7 @@
 								<input type="hidden" name="employee" value="${employee }">
 								<input type="submit" name="requestType" value="詳細">
 							</form></td>
-						<c:if test="${authority == admin }">
+						<c:if test="${authority.authority == \"admin\" }">
 							<td><form action="/CodeCampFinal/MainServlet" method="get">
 									<input type="hidden" name="empID" value="${employee.empID }">
 									<input type="hidden" name="employee" value="${employee }">
@@ -44,9 +44,15 @@
 				</c:forEach>
 			</table>
 			<form action="/CodeCampFinal/MainServlet" method="get">
-				${errorMsg } <input type="submit" name="requestType" value="新規追加"><br />
+				${errorMsg }
 				<input type="submit" name="requestType" value="検索..."><br />
-				<input type="submit" name="requestType" value="CSVファイルに出力"><br />
+				<c:if test="${authority.authority == \"admin\" }">
+					<input type="submit" name="requestType" value="新規追加"><br />
+					<input type="submit" name="requestType" value="CSVファイルを読み込み"><br />
+				</c:if>
+				<c:if test="${authority.authority == \"admin\" || authority.authority == \"manager\" }">
+					<input type="submit" name="requestType" value="CSVファイルに出力"><br />
+				</c:if>
 				<input type="submit" name="requestType" value="TOPへ">
 			</form>
 		</c:otherwise>

@@ -43,7 +43,7 @@ public class UserDAO {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
-			String sql = "INSERT INTO USER(ID,PASS) VALUES(?,?)";
+			String sql = "INSERT INTO USER(ID,PASS) VALUES(?,HEX(AES_ENCRYPT(?, 'i-standard')))";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 
 			pstmt.setString(1, user.getId());
@@ -66,7 +66,7 @@ public class UserDAO {
 			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 
-			String sql = "SELECT PASS FROM USER WHERE ID = ?";
+			String sql = "SELECT CONVERT(AES_DECRYPT(UNHEX(PASS),'i-standard') USING utf8) PASS FROM USER WHERE ID = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 
 			pstmt.setString(1, user.getId());

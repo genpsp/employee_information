@@ -44,6 +44,11 @@ public class LoginServlet extends HttpServlet {
 		if (requestType.equals("新規")) {
 			RequestDispatcher rdisp = request.getRequestDispatcher("/WEB-INF/jsp/newUser.jsp");
 			rdisp.forward(request, response);
+		} else if (requestType.equals("ログアウト")) {
+			session.removeAttribute("User");
+
+			RequestDispatcher rdisp = request.getRequestDispatcher("index.jsp");
+			rdisp.forward(request, response);
 		}
 
 	}
@@ -69,7 +74,9 @@ public class LoginServlet extends HttpServlet {
 			boolean result = userDao.addUser(user);
 			String resultMsg = "登録しました";
 
-			if (!result) {
+			if (result) {
+				session.setAttribute("User", user);
+			} else if (!result) {
 				resultMsg = "登録できませんでした";
 			}
 			request.setAttribute("resultMsg", resultMsg);
