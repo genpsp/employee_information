@@ -10,6 +10,7 @@ import java.util.List;
 
 import model.dao.DepartmentDAO;
 import model.dao.ImageDAO;
+import model.dao.PositionDAO;
 
 public class CSVInOut {
 	public List<Employee> searchEmployee(List<Employee> employeeList) {
@@ -18,11 +19,12 @@ public class CSVInOut {
 
 		List<Employee> mutterList = new ArrayList<Employee>();
 		DepartmentDAO departDao = new DepartmentDAO();
+		PositionDAO positionDao = new PositionDAO();
 		ImageDAO imageDao = new ImageDAO();
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			StringBuilder sb = new StringBuilder();
 			for (Employee emp : employeeList) {
@@ -46,6 +48,8 @@ public class CSVInOut {
 				String address = rs.getString("ADDRESS");
 				String departID = rs.getString("DEPARTMENT_ID");
 				Department department = departDao.searchDepartment(departID);
+				String posID = rs.getString("POSITION_ID");
+				Position position = positionDao.searchPosition(posID);
 				String enterDate = rs.getString("ENTER_DATE");
 				String retireDate = rs.getString("RETIRE_DATE");
 
@@ -54,7 +58,7 @@ public class CSVInOut {
 				image.setImageID(imageID);
 
 				Employee employee = new Employee(ID, name, age, sex, image, addressNum, city, address, department,
-						enterDate, retireDate);
+						position, enterDate, retireDate);
 				mutterList.add(employee);
 			}
 

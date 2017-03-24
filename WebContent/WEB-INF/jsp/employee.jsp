@@ -26,21 +26,27 @@
 						<td><form action="/CodeCampFinal/MainServlet" method="get">
 								<input type="hidden" name="empID" value="${employee.empID }">
 								<input type="hidden" name="employee" value="${employee }">
-								<input type="submit" name="requestType" value="編集">
+								<input type="submit" name="requestType" value="詳細">
 							</form></td>
-						<td><form action="/CodeCampFinal/MainServlet" method="get">
-								<input type="hidden" name="empID" value="${employee.empID }">
-								<input type="hidden" name="employee" value="${employee }">
-								<input type="submit" name="requestType" value="削除">
-							</form></td>
+						<c:if test="${authority == admin }">
+							<td><form action="/CodeCampFinal/MainServlet" method="get">
+									<input type="hidden" name="empID" value="${employee.empID }">
+									<input type="hidden" name="employee" value="${employee }">
+									<input type="submit" name="requestType" value="編集">
+								</form></td>
+							<td><form action="/CodeCampFinal/MainServlet" method="get">
+									<input type="hidden" name="empID" value="${employee.empID }">
+									<input type="hidden" name="employee" value="${employee }">
+									<input type="submit" name="requestType" value="削除">
+								</form></td>
+						</c:if>
 					</tr>
 				</c:forEach>
 			</table>
 			<form action="/CodeCampFinal/MainServlet" method="get">
-				${errorMsg }
-				<input type="submit" name="requestType" value="新規追加"><br />
+				${errorMsg } <input type="submit" name="requestType" value="新規追加"><br />
 				<input type="submit" name="requestType" value="検索..."><br />
-				<input type="submit" name="requestType" value="CSVファイルに出力"><br/>
+				<input type="submit" name="requestType" value="CSVファイルに出力"><br />
 				<input type="submit" name="requestType" value="TOPへ">
 			</form>
 		</c:otherwise>

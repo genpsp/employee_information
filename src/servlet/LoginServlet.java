@@ -8,8 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import model.Authority;
 import model.User;
+import model.dao.EmployeeDAO;
 import model.dao.UserDAO;
 
 /**
@@ -35,6 +38,8 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String requestType = request.getParameter("requestType");
+		HttpSession session = request.getSession();
+		UserDAO userDao = new UserDAO();
 
 		if (requestType.equals("新規")) {
 			RequestDispatcher rdisp = request.getRequestDispatcher("/WEB-INF/jsp/newUser.jsp");
@@ -51,23 +56,47 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String requestType = request.getParameter("requestType");
+		HttpSession session = request.getSession();
 		UserDAO userDao = new UserDAO();
+		EmployeeDAO empDao = new EmployeeDAO();
 
 		if (requestType.equals("登録")) {
-			String id = userDao.getLastIDNum();
-			String name = request.getParameter("name");
+			String empID = request.getParameter("empID");
 			String pass = request.getParameter("pass");
-			String mailAddress = request.getParameter("mail");
 
-			User user = new User(id, name, pass, mailAddress);
+			User user = new User(empID, pass);
 
 			boolean result = userDao.addUser(user);
-
 			String resultMsg = "登録しました";
+
+			if (!result) {
+				resultMsg = "登録できませんでした";
+			}
 			request.setAttribute("resultMsg", resultMsg);
 
 			RequestDispatcher rdisp = request.getRequestDispatcher("/WEB-INF/jsp/result.jsp");
 			rdisp.forward(request, response);
+		} else if (requestType.equals("ログイン")) {
+			String empID = request.getParameter("empID");
+			String pass = request.getParameter("pass");
+
+			User user = new User(empID, pass);
+			boolean result = userDao.confirmUser(user);
+
+			if (result) {
+				session.setAttribute("User", user);
+				Authority authority = new Authority(empDao.getEmployee(user.getId()));
+				session.setAttribute("authority", authority);
+
+				RequestDispatcher rdisp = request.getRequestDispatcher("index.jsp");
+				rdisp.forward(request, response);
+			} else if (!result) {
+				String loginMsg = "<p>ログイン情報が間違っているか、登録されていません</p>";
+				request.setAttribute("loginMsg", loginMsg);
+
+				RequestDispatcher rdisp = request.getRequestDispatcher("index.jsp");
+				rdisp.forward(request, response);
+			}
 		}
 
 	}

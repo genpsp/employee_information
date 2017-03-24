@@ -11,6 +11,7 @@ import java.util.List;
 import model.Department;
 import model.Employee;
 import model.Image;
+import model.Position;
 import model.TypeOfSearch;
 
 public class EmployeeDAO {
@@ -23,7 +24,7 @@ public class EmployeeDAO {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String department = type.getDepartment();
 			String empID = type.getEmpID();
@@ -78,7 +79,7 @@ public class EmployeeDAO {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "SELECT ID,NAME FROM EMPINF";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -103,9 +104,10 @@ public class EmployeeDAO {
 
 	public Employee getEmployee(String empID) {
 		DepartmentDAO departDao = new DepartmentDAO();
+		PositionDAO positionDao = new PositionDAO();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "SELECT * FROM EMPINF WHERE ID = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -124,6 +126,8 @@ public class EmployeeDAO {
 			String address = rs.getString("ADDRESS");
 			String departID = rs.getString("DEPARTMENT_ID");
 			Department department = departDao.searchDepartment(departID);
+			String posID = rs.getString("POSITION_ID");
+			Position position = positionDao.searchPosition(posID);
 			String enterDate = rs.getString("ENTER_DATE");
 			String retireDate = rs.getString("RETIRE_DATE");
 
@@ -131,7 +135,7 @@ public class EmployeeDAO {
 			image.setData(imageDao.getImage(imageID));
 			image.setImageID(imageID);
 
-			Employee employee = new Employee(ID, name, age, sex, image, addressNum, city, address, department,
+			Employee employee = new Employee(ID, name, age, sex, image, addressNum, city, address, department, position,
 					enterDate, retireDate);
 
 			return employee;
@@ -146,9 +150,9 @@ public class EmployeeDAO {
 	public boolean addEmployee(Employee employee) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
-			String sql = "INSERT INTO EMPINF(ID, NAME, AGE, SEX, IMAGE_ID, ADDRESS_NUM, CITY, ADDRESS, DEPARTMENT_ID, ENTER_DATE, RETIRE_DATE) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO EMPINF(ID, NAME, AGE, SEX, IMAGE_ID, ADDRESS_NUM, CITY, ADDRESS, DEPARTMENT_ID, POSITION_ID, ENTER_DATE, RETIRE_DATE) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 
 			int count = 1;
@@ -161,6 +165,7 @@ public class EmployeeDAO {
 			pstmt.setString(count++, employee.getCity());
 			pstmt.setString(count++, employee.getAddress());
 			pstmt.setObject(count++, employee.getDepartment().getId());
+			pstmt.setObject(count++, employee.getPosition().getId());
 			pstmt.setString(count++, employee.getEnterDate());
 			pstmt.setString(count++, employee.getRetireDate());
 
@@ -179,7 +184,7 @@ public class EmployeeDAO {
 	public boolean updateEmployee(Employee employee) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "UPDATE EMPINF SET ID=?, NAME=?, AGE=?, SEX=?, IMAGE_ID=?, ADDRESS_NUM=?, CITY=?, ADDRESS=?, DEPARTMENT_ID=?, ENTER_DATE=?, RETIRE_DATE=? WHERE ID = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -213,7 +218,7 @@ public class EmployeeDAO {
 	public boolean deleteEmployee(String empID) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "SELECT IMAGE_ID FROM EMPINF WHERE ID =?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -245,7 +250,7 @@ public class EmployeeDAO {
 	public String getLastIDNum() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "SELECT ID FROM EMPINF ORDER BY ID DESC LIMIT 1";
 			PreparedStatement pstmt = con.prepareStatement(sql);

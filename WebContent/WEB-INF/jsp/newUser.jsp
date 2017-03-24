@@ -9,9 +9,8 @@
 <body>
 	<h1>ユーザー登録</h1>
 	<form action="/CodeCampFinal/LoginServlet" method="post">
-		名前:<input type="text" name="name"><br />
+		社員ID:<input type="text" name="empID"><br />
 		パスワード:<input type="password" name="pass"><br />
-		メールアドレス:<input type="text" name="mail"><br/>
 		<input type="submit" name="requestType" value="登録">
 	</form>
 </body>

@@ -18,7 +18,7 @@ public class DepartmentDAO {
 	public List<Department> findAll() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "SELECT * FROM DEPARTMENTS";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -44,7 +44,7 @@ public class DepartmentDAO {
 	public boolean addDepartment(Department department) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "INSERT INTO DEPARTMENTS(ID, DEPARTMENT) VALUES(?, ?)";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -67,7 +67,7 @@ public class DepartmentDAO {
 	public boolean updateDepartment(Department department) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "UPDATE DEPARTMENTS SET DEPARTMENT = ? WHERE ID = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -90,7 +90,7 @@ public class DepartmentDAO {
 	public boolean deleteDepartment(String id) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "DELETE FROM DEPARTMENTS WHERE ID = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -114,7 +114,7 @@ public class DepartmentDAO {
 	public Department searchDepartment(String id) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "SELECT ID,DEPARTMENT FROM DEPARTMENTS WHERE ID = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -139,7 +139,7 @@ public class DepartmentDAO {
 	public String getLastIDNum() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "SELECT ID FROM DEPARTMENTS ORDER BY ID DESC LIMIT 1";
 			PreparedStatement pstmt = con.prepareStatement(sql);

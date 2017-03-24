@@ -15,7 +15,7 @@ public class ImageDAO {
 	public byte[] getImage(String imageID) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "SELECT IMG FROM IMAGES WHERE ID = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -38,7 +38,7 @@ public class ImageDAO {
 	public boolean addImage(Image image) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "INSERT INTO IMAGES(ID, IMG) VALUES(?, ?)";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -61,7 +61,7 @@ public class ImageDAO {
 	public boolean updateImage(Image image) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "UPDATE IMAGES SET IMG=? WHERE ID=?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -84,7 +84,7 @@ public class ImageDAO {
 	public boolean deleteImage(String ID) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "DELETE FROM IMAGES WHERE ID = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -108,7 +108,7 @@ public class ImageDAO {
 	public static String getLastIDNum() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String id = "P001";
 

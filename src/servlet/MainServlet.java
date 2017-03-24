@@ -22,10 +22,12 @@ import model.CityList;
 import model.Department;
 import model.Employee;
 import model.Image;
+import model.Position;
 import model.TypeOfSearch;
 import model.dao.DepartmentDAO;
 import model.dao.EmployeeDAO;
 import model.dao.ImageDAO;
+import model.dao.PositionDAO;
 
 /**
  * Servlet implementation class MainServlet
@@ -46,14 +48,21 @@ public class MainServlet extends HttpServlet {
 		String requestType = request.getParameter("requestType");
 		EmployeeDAO empDao = new EmployeeDAO();
 		DepartmentDAO departDao = new DepartmentDAO();
+		PositionDAO positionDao = new PositionDAO();
 		ImageDAO imgDao = new ImageDAO();
 
-		if (requestType.equals("編集")) {
+		if (requestType.equals("詳細")) {
+			String empID = request.getParameter("empID");
+			Employee employee = empDao.getEmployee(empID);
+			session.setAttribute("employee", employee);
+
+			RequestDispatcher rdisp = request.getRequestDispatcher("/WEB-INF/jsp/employeeDiscription.jsp");
+			rdisp.forward(request, response);
+		} else if (requestType.equals("編集")) {
 			request.setAttribute("departmentList", departDao.findAll());
 			String empID = request.getParameter("empID");
 			Employee employee = empDao.getEmployee(empID);
 			session.setAttribute("employee", employee);
-			request.setAttribute("empID", empID);
 			request.setAttribute("cityList", CityList.getCityList());
 
 			RequestDispatcher rdisp = request.getRequestDispatcher("/WEB-INF/jsp/employeeEditor.jsp");
@@ -73,6 +82,7 @@ public class MainServlet extends HttpServlet {
 		} else if (requestType.equals("新規追加")) {
 			session.removeAttribute("employee");
 			request.setAttribute("departmentList", departDao.findAll());
+			request.setAttribute("positionList", positionDao.findAll());
 			request.setAttribute("cityList", CityList.getCityList());
 
 			RequestDispatcher rdisp = request.getRequestDispatcher("/WEB-INF/jsp/employeeEditor.jsp");
@@ -169,10 +179,12 @@ public class MainServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String requestType = request.getParameter("requestType");
 		EmployeeDAO empDao = new EmployeeDAO();
+		PositionDAO positionDao = new PositionDAO();
 		DepartmentDAO departDao = new DepartmentDAO();
 
 		if (requestType.equals("キャンセル")) {
 			session.setAttribute("employeeList", empDao.searchEmployee());
+			session.removeAttribute("employee");
 
 			RequestDispatcher rdisp = request.getRequestDispatcher("/WEB-INF/jsp/employee.jsp");
 			rdisp.forward(request, response);
@@ -187,6 +199,8 @@ public class MainServlet extends HttpServlet {
 			String address = request.getParameter("address");
 			String departID = request.getParameter("department");
 			Department department = departDao.searchDepartment(departID);
+			String positionID = request.getParameter("position");
+			Position position = positionDao.searchPosition(positionID);
 			String enterDate = request.getParameter("enterDate");
 			String retireDate = request.getParameter("retireDate");
 
@@ -196,7 +210,7 @@ public class MainServlet extends HttpServlet {
 			image.setImageID(ImageDAO.getLastIDNum());
 
 			Employee emp = new Employee(empID, name, age, Integer.parseInt(sex), image, addressNum, city, address,
-					department, enterDate, retireDate);
+					department, position, enterDate, retireDate);
 			boolean result = empDao.addEmployee(emp);
 
 			String resultMsg = "<p>データベースの更新が完了しました</p>";
@@ -228,6 +242,8 @@ public class MainServlet extends HttpServlet {
 			String address = request.getParameter("address");
 			String departID = request.getParameter("department");
 			Department department = departDao.searchDepartment(departID);
+			String positionID = request.getParameter("position");
+			Position position = positionDao.searchPosition(positionID);
 			String enterDate = request.getParameter("enterDate");
 			String retireDate = request.getParameter("retireDate");
 
@@ -242,7 +258,7 @@ public class MainServlet extends HttpServlet {
 				image.setImageID(employee.getImage().getImageID());
 			}
 			Employee emp = new Employee(empID, name, age, Integer.parseInt(sex), image, addressNum, city, address,
-					department, enterDate, retireDate);
+					department, position, enterDate, retireDate);
 			boolean result = empDao.updateEmployee(emp);
 
 			String resultMsg = "<p>データベースの更新が完了しました</p>";

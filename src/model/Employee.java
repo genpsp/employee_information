@@ -10,21 +10,23 @@ public class Employee {
 	private String city;
 	private String address;
 	private Department department;
+	private Position position;
 	private String enterDate;
 	private String retireDate;
 
-	public Employee(String empID, String name, String age, int sex, Image Image, String addressNum, String city,
-			String address, Department department, String enterDate, String retireDate) {
+	public Employee(String empID, String name, String age, int sex, Image image, String addressNum, String city,
+			String address, Department department, Position position, String enterDate, String retireDate) {
 		super();
 		this.empID = empID;
 		this.name = name;
 		this.age = age;
 		this.sex = sex;
-		this.image = Image;
+		this.image = image;
 		this.addressNum = addressNum;
 		this.city = city;
 		this.address = address;
 		this.department = department;
+		this.position = position;
 		this.enterDate = enterDate;
 		this.retireDate = retireDate;
 	}
@@ -122,4 +124,13 @@ public class Employee {
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
+
+	public Position getPosition() {
+		return position;
+	}
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
 }

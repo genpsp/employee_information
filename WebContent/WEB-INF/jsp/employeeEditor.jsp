@@ -11,7 +11,7 @@
 <title>社員編集画面</title>
 </head>
 <body>
-	<h1>データ編集</h1>aaaa
+	<h1>データ編集</h1>
 	<form action="/CodeCampFinal/MainServlet" method="post"
 		enctype="multipart/form-data">
 		社員ID:<input type="text" name="empID" value="${employee.empID }" placeholder="EMP001"><br />
@@ -21,8 +21,8 @@
 		<input type="radio" name="sex" value="0" <c:if test="${employee.sex == 0 }">checked</c:if>>男性
 		<input type="radio" name="sex" value="1" <c:if test="${employee.sex == 1 }">checked</c:if>>女性<br />
 		写真:<br />
-		<c:if test="${empID != null }">
-			<img src="/CodeCampFinal/MainServlet?empID=${empID }&requestType=getImage" width="${imageWidth }" height="${imageHight }" />
+		<c:if test="${employee.empID != null }">
+			<img src="/CodeCampFinal/MainServlet?empID=${employee.empID }&requestType=getImage" width="${imageWidth }" height="${imageHight }" />
 			<br />
 		</c:if>
 		<input type="file" name="file"><br />
@@ -38,6 +38,11 @@
 		所属:<select name="department" required>
 			<c:forEach var="department" items="${departmentList }">
 				<option value="${department.id }" <c:if test="${department.id == employee.department.id }">selected</c:if>>${department.department }</option>
+			</c:forEach>
+		</select><br/>
+		役職:<select name="position" required>
+			<c:forEach var="position" items="${positionList }">
+				<option value="${position.id }" <c:if test="${position.id == employee.position.id }">selected</c:if>>${position.position }</option>
 			</c:forEach>
 		</select><br/>
 

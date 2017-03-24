@@ -15,7 +15,7 @@ public class UserDAO {
 	public User searchUser(String ID) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
 			String sql = "SELECT IMG FROM IMAGES WHERE ID = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -25,11 +25,9 @@ public class UserDAO {
 			rs.next();
 
 			String id = rs.getString("ID");
-			String name = rs.getString("NAME");
 			String pass = rs.getString("PASS");
-			String mailAddress = rs.getString("MAIL_ADDRESS");
 
-			User user = new User(id, name, pass, mailAddress);
+			User user = new User(id, pass);
 
 			return user;
 		} catch (SQLException | ClassNotFoundException e) {
@@ -43,15 +41,13 @@ public class UserDAO {
 	public boolean addUser(User user) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
-			String sql = "INSERT INTO USER(ID,NAME,PASS,MAIL_ADDRESS) VALUES(?,?,?,?)";
+			String sql = "INSERT INTO USER(ID,PASS) VALUES(?,?)";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 
 			pstmt.setString(1, user.getId());
-			pstmt.setString(2, user.getName());
-			pstmt.setString(3, user.getPass());
-			pstmt.setString(4, user.getMailAddress());
+			pstmt.setString(2, user.getPass());
 
 			pstmt.executeUpdate();
 			return true;
@@ -64,22 +60,49 @@ public class UserDAO {
 		}
 	}
 
+	public boolean confirmUser(User user) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
+
+
+			String sql = "SELECT PASS FROM USER WHERE ID = ?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+
+			pstmt.setString(1, user.getId());
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				boolean result = rs.getString("PASS").equals(user.getPass());
+				return result;
+			}else{
+				return false;
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			conClose(con);
+		}
+	}
+
 	public String getLastIDNum() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(DB_URI, "root", "genpsp10");
+			Connection con = DriverManager.getConnection(DB_URI, "root", "i-standard");
 
-			String id = "U001";
+			String id = "EMP001";
 
 			String sql = "SELECT ID FROM USER ORDER BY ID DESC LIMIT 1";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				String[] idStr = rs.getString("ID").split("U");
+				String[] idStr = rs.getString("ID").split("EMP");
 
 				int idNum = Integer.parseInt(idStr[1]) + 1;
-				id = "U" + String.format("%03d", idNum);
+				id = "EMP" + String.format("%03d", idNum);
 			}
 			return id;
 
